@@ -1,0 +1,422 @@
+=========================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_953e7_b78e6/rev_953e7-b78e6.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_953e7_42ebb/rev_953e7-42ebb.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_edf8e_b3762/rev_edf8e-b3762.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_9eede_ccea2/rev_9eede-ccea2.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_f1648_7e1f7/rev_f1648-7e1f7.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_863f3_36b12/rev_863f3-36b12.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_2de89_6b5f2/rev_2de89-6b5f2.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_f678d_5a59f/rev_f678d-5a59f.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_4d02d_75a0d/rev_4d02d-75a0d.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_d866c_882f3/rev_d866c-882f3.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_02b9d_7322a/rev_02b9d-7322a.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_602fc_28ee2/rev_602fc-28ee2.revisions
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556139/fstmerge_var1_6757504229786392883
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556139/fstmerge_base_7033877383606153068
+@Override
+    public Statement apply(final Statement base, Description description) {
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                startIfRequired();
+                try {
+                    base.evaluate();
+                } finally {
+                    jettyServer.stop();
+                }
+            }
+        };
+    }
+=======
+@Override
+    public Statement apply(final Statement base, Description description) {
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                startIfRequired();
+                try {
+                    base.evaluate();
+                } finally {
+                    resetConfigOverrides();
+                    jettyServer.stop();
+                }
+            }
+        };
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556139/fstmerge_var2_4889797391392047584
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_602fc_28ee2/rev_602fc-28ee2/dropwizard-testing/src/main/java/com/yammer/dropwizard/testing/junit/DropwizardServiceRule.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556270/fstmerge_var1_6675583468641113154
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556270/fstmerge_base_6947137025790024244
+@Test
+    public void canGetExpectedResourceOverHttp() {
+        final String content = new Client().resource("http://localhost:" +
+                                                             RULE.getLocalPort()
+                                                             +"/test").get(String.class);
+
+        assertThat(content, is("Yes, it's here"));
+    }
+=======
+@Test
+    public void canGetExpectedResourceOverHttp() {
+        final String content = new Client().resource("http://localhost:" +
+                RULE.getLocalPort()
+                + "/test").get(String.class);
+
+        assertThat(content, is("Yes, it's here"));
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556270/fstmerge_var2_985321539349985730
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_602fc_28ee2/rev_602fc-28ee2/dropwizard-testing/src/test/java/com/yammer/dropwizard/testing/tests/junit/DropwizardServiceRuleTest.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556297/fstmerge_var1_6377099163763821752
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556297/fstmerge_base_5135937903905448668
+private static String resourceFilePath(String resourceClassPathLocation) {
+        try {
+
+            return new File(Resources.getResource(resourceClassPathLocation).toURI()).getAbsolutePath();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+=======
+public static String resourceFilePath(String resourceClassPathLocation) {
+        try {
+
+            return new File(Resources.getResource(resourceClassPathLocation).toURI()).getAbsolutePath();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682556297/fstmerge_var2_1419353983450602146
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_602fc_28ee2/rev_602fc-28ee2/dropwizard-testing/src/test/java/com/yammer/dropwizard/testing/tests/junit/DropwizardServiceRuleTest.java
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_4cc7e_85403/rev_4cc7e-85403.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_eb491_528c8/rev_eb491-528c8.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566.revisions
+Conflict type: LineBasedMCFd
+Conflict body: 
+private void configureSslContext(SslContextFactory factory) {
+        for (File keyStore : config.getSslConfiguration().getKeyStore().asSet()) {
+            factory.setKeyStorePath(keyStore.getAbsolutePath());
+        }
+
+        for (String password : config.getSslConfiguration().getKeyStorePassword().asSet()) {
+            factory.setKeyStorePassword(password);
+        }
+
+        for (String password : config.getSslConfiguration().getKeyManagerPassword().asSet()) {
+            factory.setKeyManagerPassword(password);
+        }
+
+        for (String certAlias : config.getSslConfiguration().getCertAlias().asSet()) {
+            factory.setCertAlias(certAlias);
+        }
+
+        for (String type : config.getSslConfiguration().getKeyStoreType().asSet()) {
+            if (type.startsWith("Windows-")) {
+                try {
+                    final KeyStore keyStore = KeyStore.getInstance(type);
+
+                    keyStore.load(null, null);
+                    factory.setKeyStore(keyStore);
+
+                } catch (Exception e) {
+                    throw new IllegalStateException("Windows key store not supported", e);
+                }
+            } else {
+                factory.setKeyStoreType(type);
+            }
+        }
+        
+        for (String path : config.getSslConfiguration().getTrustStorePath().asSet()) {
+            factory.setTrustStore(path);
+        }
+
+        for (String password : config.getSslConfiguration().getTrustStorePassword().asSet()) {
+            factory.setTrustStorePassword(password);
+        }
+
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682652731/fstmerge_var1_6850286299568293120
+        factory.setIncludeProtocols(config.getSslConfiguration()
+                                          .getSupportedProtocols()
+                                          .toArray(new String[config.getSslConfiguration()
+                                                                    .getSupportedProtocols()
+                                                                    .size()]));
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682652731/fstmerge_base_12533020382956549
+        factory.setIncludeProtocols(config.getSslConfiguration().getSupportedProtocols());
+=======
+        for (String type : config.getSslConfiguration().getTrustStoreType().asSet()) {
+            factory.setTrustStoreType(type);
+        }
+
+        for (Boolean needClientAuth : config.getSslConfiguration().getNeedClientAuth().asSet()) {
+            factory.setNeedClientAuth(needClientAuth);
+        }
+        
+        factory.setIncludeProtocols(config.getSslConfiguration().getSupportedProtocols());
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682652731/fstmerge_var2_4422869138419883708
+    }
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/config/ServerFactory.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654326/fstmerge_var1_244208859960520217
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654326/fstmerge_base_2742974666200279939
+public void trace(String message, Object arg) {
+        if (isTraceEnabled()) {
+            logger.trace(MessageFormatter.format(message, arg).getMessage());
+        }
+    }
+=======
+public void trace(String message, Object... args) {
+        if (isTraceEnabled()) {
+            logger.trace(MessageFormatter.arrayFormat(message, args).getMessage());
+        }
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654326/fstmerge_var2_5398031254751804796
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654348/fstmerge_var1_2723485053185586742
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654348/fstmerge_base_8777977153212705155
+public void trace(Throwable e, String message, Object arg) {
+        if (isTraceEnabled()) {
+            logger.trace(MessageFormatter.format(message, arg).getMessage(), e);
+        }
+    }
+=======
+public void trace(Throwable e, String message, Object... args) {
+        if (isTraceEnabled()) {
+            logger.trace(MessageFormatter.arrayFormat(message, args).getMessage(), e);
+        }
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654348/fstmerge_var2_2864432993803840478
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654386/fstmerge_var1_2644050630046216888
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654386/fstmerge_base_2286576601638354113
+public void debug(String message, Object arg) {
+        if (isDebugEnabled()) {
+            logger.debug(MessageFormatter.format(message, arg).getMessage());
+        }
+    }
+=======
+public void debug(String message, Object... args) {
+        if (isDebugEnabled()) {
+            logger.debug(MessageFormatter.arrayFormat(message, args).getMessage());
+        }
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654386/fstmerge_var2_6956525483457971883
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654408/fstmerge_var1_4585604535322271177
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654408/fstmerge_base_5387255889149241186
+public void debug(Throwable e, String message, Object arg) {
+        if (isDebugEnabled()) {
+            logger.debug(MessageFormatter.format(message, arg).getMessage(), e);
+        }
+    }
+=======
+public void debug(Throwable e, String message, Object... args) {
+        if (isDebugEnabled()) {
+            logger.debug(MessageFormatter.arrayFormat(message, args).getMessage(), e);
+        }
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654408/fstmerge_var2_951255552433074156
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654445/fstmerge_var1_8434078566883427830
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654445/fstmerge_base_3157965648996124238
+public void info(String message, Object arg) {
+        if (isInfoEnabled()) {
+            logger.info(MessageFormatter.format(message, arg).getMessage());
+        }
+    }
+=======
+public void info(String message, Object... args) {
+        if (isInfoEnabled()) {
+            logger.info(MessageFormatter.arrayFormat(message, args).getMessage());
+        }
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654445/fstmerge_var2_6024891586319474772
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654468/fstmerge_var1_91477198672125619
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654468/fstmerge_base_255390255082039003
+public void info(Throwable e, String message, Object arg) {
+        if (isInfoEnabled()) {
+            logger.info(MessageFormatter.format(message, arg).getMessage(), e);
+        }
+    }
+=======
+public void info(Throwable e, String message, Object... args) {
+        if (isInfoEnabled()) {
+            logger.info(MessageFormatter.arrayFormat(message, args).getMessage(), e);
+        }
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654468/fstmerge_var2_8934693499870612279
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654497/fstmerge_var1_1853932482032936310
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654497/fstmerge_base_3653784433175153794
+public void warn(String message, Object arg) {
+        logger.warn(MessageFormatter.format(message, arg).getMessage());
+    }
+=======
+public void warn(String message, Object... args) {
+        logger.warn(MessageFormatter.arrayFormat(message, args).getMessage());
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654497/fstmerge_var2_3940403190891565417
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654519/fstmerge_var1_2078765368041630542
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654519/fstmerge_base_131596327245254244
+public void warn(Throwable e, String message, Object arg) {
+        logger.warn(MessageFormatter.format(message, arg).getMessage(), e);
+    }
+=======
+public void warn(Throwable e, String message, Object... args) {
+        logger.warn(MessageFormatter.arrayFormat(message, args).getMessage(), e);
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654519/fstmerge_var2_7367684211831716736
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654549/fstmerge_var1_4547483033207450077
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654549/fstmerge_base_674926220673758719
+public void error(String message, Object arg) {
+        logger.error(MessageFormatter.format(message, arg).getMessage());
+    }
+=======
+public void error(String message, Object... args) {
+        logger.error(MessageFormatter.arrayFormat(message, args).getMessage());
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654549/fstmerge_var2_8697420443265103168
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654572/fstmerge_var1_9092977921909814062
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654572/fstmerge_base_3988480614740116141
+public void error(Throwable e, String message, Object arg) {
+        logger.error(MessageFormatter.format(message, arg).getMessage(), e);
+    }
+=======
+public void error(Throwable e, String message, Object... args) {
+        logger.error(MessageFormatter.arrayFormat(message, args).getMessage(), e);
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654572/fstmerge_var2_8733232963650757442
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654601/fstmerge_var1_8842255402178426057
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654601/fstmerge_base_7694687463028817685
+@Deprecated
+    public void fatal(String message, Object arg) {
+        logger.error(MessageFormatter.format(message, arg).getMessage());
+    }
+=======
+@Deprecated
+    public void fatal(String message, Object... args) {
+        logger.error(MessageFormatter.arrayFormat(message, args).getMessage());
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654601/fstmerge_var2_7632450225472498471
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654624/fstmerge_var1_5836856960078426270
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654624/fstmerge_base_6597699329596017891
+@Deprecated
+    public void fatal(Throwable e, String message, Object arg) {
+        logger.error(MessageFormatter.format(message, arg).getMessage(), e);
+    }
+=======
+@Deprecated
+    public void fatal(Throwable e, String message, Object... args) {
+        logger.error(MessageFormatter.arrayFormat(message, args).getMessage(), e);
+    }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409682654624/fstmerge_var2_2649100362363672066
+
+File path: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_97e4b_e5566/rev_97e4b-e5566/dropwizard-core/src/main/java/com/yammer/dropwizard/logging/Log.java
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_34057_d7d4a/rev_34057-d7d4a.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_89adc_5ac7e/rev_89adc-5ac7e.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_6f87e_0767a/rev_6f87e-0767a.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_c58eb_7e7bb/rev_c58eb-7e7bb.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_09c7b_88dab/rev_09c7b-88dab.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_91c52_7af77/rev_91c52-7af77.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_084e6_09639/rev_084e6-09639.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_09aed_cbb8e/rev_09aed-cbb8e.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_b32e4_ee8e4/rev_b32e4-ee8e4.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/dropwizard/revisions/rev_7c24d_0127c/rev_7c24d-0127c.revisions
+
+=========================================================

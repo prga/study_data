@@ -1,0 +1,752 @@
+=========================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_9f1c3_2fe24/rev_9f1c3-2fe24.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_f641e_1a6f8/rev_f641e-1a6f8.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_2a0a6_ec9bc/rev_2a0a6-ec9bc.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_c641f_0d78c/rev_c641f-0d78c.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_f641e_1a6f8/rev_f641e-1a6f8.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_0bb1f_479de/rev_0bb1f-479de.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_5be24_e4642/rev_5be24-e4642.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_a7152_eafd8/rev_a7152-eafd8.revisions
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138121/fstmerge_var1_3000677586139885048
+void register(final NioDatagramChannel channel, final ChannelFuture future) {
+        final Runnable channelRegTask = new ChannelRegistionTask(channel,
+                future);
+        Selector selector;
+
+        synchronized (startStopLock) {
+            if (!started) {
+                // Open a selector if this worker didn't start yet.
+                try {
+                    this.selector = selector = Selector.open();
+                } catch (final Throwable t) {
+                    throw new ChannelException("Failed to create a selector.",
+                            t);
+                }
+
+                boolean success = false;
+                try {
+                    // Start the main selector loop. See run() for details.
+                    executor.execute(this);
+                    success = true;
+                } finally {
+                    if (!success) {
+                        try {
+                            // Release the Selector if the execution fails.
+                            selector.close();
+                        } catch (final Throwable t) {
+                            if (logger.isWarnEnabled()) {
+                                logger.warn("Failed to close a selector.", t);
+                            }
+                        }
+                        this.selector = selector = null;
+                        // The method will return to the caller at this point.
+                    }
+                }
+            } else {
+                // Use the existing selector if this worker has been started.
+                selector = this.selector;
+            }
+            assert selector != null && selector.isOpen();
+
+            started = true;
+
+            // "Add" the registration task to the register task queue.
+            boolean offered = registerTaskQueue.offer(channelRegTask);
+            assert offered;
+        }
+
+        if (wakenUp.compareAndSet(false, true)) {
+            selector.wakeup();
+        }
+    }
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138121/fstmerge_base_7619656278893305592
+void register(final NioDatagramChannel channel, final ChannelFuture future) {
+        final Runnable channelRegTask = new ChannelRegistionTask(channel,
+                future);
+        Selector selector;
+
+        synchronized (startStopLock) {
+            if (!started) {
+                // Open a selector if this worker didn't start yet.
+                try {
+                    this.selector = selector = Selector.open();
+                } catch (final Throwable t) {
+                    throw new ChannelException("Failed to create a selector.",
+                            t);
+                }
+
+                boolean success = false;
+                try {
+                    // Start the main selector loop. See run() for details.
+                    executor.execute(this);
+                    success = true;
+                } finally {
+                    if (!success) {
+                        try {
+                            // Release the Selector if the execution fails.
+                            selector.close();
+                        } catch (final Throwable t) {
+                            logger.warn("Failed to close a selector.", t);
+                        }
+                        this.selector = selector = null;
+                        // The method will return to the caller at this point.
+                    }
+                }
+            } else {
+                // Use the existing selector if this worker has been started.
+                selector = this.selector;
+            }
+            assert selector != null && selector.isOpen();
+
+            started = true;
+
+            // "Add" the registration task to the register task queue.
+            boolean offered = registerTaskQueue.offer(channelRegTask);
+            assert offered;
+        }
+
+        if (wakenUp.compareAndSet(false, true)) {
+            selector.wakeup();
+        }
+    }
+=======
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138121/fstmerge_var2_6153049112270678575
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_a7152_eafd8/rev_a7152-eafd8/transport/src/main/java/io/netty/channel/socket/nio/NioDatagramWorker.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138667/fstmerge_var1_989110534700525495
+void register(NioSocketChannel channel, ChannelFuture future) {
+
+        boolean server = !(channel instanceof NioClientSocketChannel);
+        Runnable registerTask = new RegisterTask(channel, future, server);
+        Selector selector;
+
+        synchronized (startStopLock) {
+            if (!started) {
+                // Open a selector if this worker didn't start yet.
+                try {
+                    this.selector = selector = Selector.open();
+                } catch (Throwable t) {
+                    throw new ChannelException(
+                            "Failed to create a selector.", t);
+                }
+
+                // Start the worker thread with the new Selector.
+                boolean success = false;
+                try {
+                    DeadLockProofWorker.start(executor, this);
+                    success = true;
+                } finally {
+                    if (!success) {
+                        // Release the Selector if the execution fails.
+                        try {
+                            selector.close();
+                        } catch (Throwable t) {
+                            if (logger.isWarnEnabled()) {
+                                logger.warn("Failed to close a selector.", t);
+                            }
+                        }
+                        this.selector = selector = null;
+                        // The method will return to the caller at this point.
+                    }
+                }
+            } else {
+                // Use the existing selector if this worker has been started.
+                selector = this.selector;
+            }
+
+            assert selector != null && selector.isOpen();
+
+            started = true;
+            boolean offered = registerTaskQueue.offer(registerTask);
+            assert offered;
+        }
+
+        if (wakenUp.compareAndSet(false, true)) {
+            selector.wakeup();
+        }
+    }
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138667/fstmerge_base_7323706131907173941
+void register(NioSocketChannel channel, ChannelFuture future) {
+
+        boolean server = !(channel instanceof NioClientSocketChannel);
+        Runnable registerTask = new RegisterTask(channel, future, server);
+        Selector selector;
+
+        synchronized (startStopLock) {
+            if (!started) {
+                // Open a selector if this worker didn't start yet.
+                try {
+                    this.selector = selector = Selector.open();
+                } catch (Throwable t) {
+                    throw new ChannelException(
+                            "Failed to create a selector.", t);
+                }
+
+                // Start the worker thread with the new Selector.
+                boolean success = false;
+                try {
+                    DeadLockProofWorker.start(executor, this);
+                    success = true;
+                } finally {
+                    if (!success) {
+                        // Release the Selector if the execution fails.
+                        try {
+                            selector.close();
+                        } catch (Throwable t) {
+                            logger.warn("Failed to close a selector.", t);
+                        }
+                        this.selector = selector = null;
+                        // The method will return to the caller at this point.
+                    }
+                }
+            } else {
+                // Use the existing selector if this worker has been started.
+                selector = this.selector;
+            }
+
+            assert selector != null && selector.isOpen();
+
+            started = true;
+            boolean offered = registerTaskQueue.offer(registerTask);
+            assert offered;
+        }
+
+        if (wakenUp.compareAndSet(false, true)) {
+            selector.wakeup();
+        }
+    }
+=======
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138667/fstmerge_var2_1312434352907420884
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_a7152_eafd8/rev_a7152-eafd8/transport/src/main/java/io/netty/channel/socket/nio/NioWorker.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138675/fstmerge_var1_6640463516164018471
+@Override
+    public void run() {
+        thread = Thread.currentThread();
+
+        boolean shutdown = false;
+        Selector selector = this.selector;
+        for (;;) {
+            wakenUp.set(false);
+
+            if (CONSTRAINT_LEVEL != 0) {
+                selectorGuard.writeLock().lock();
+                    // This empty synchronization block prevents the selector
+                    // from acquiring its lock.
+                selectorGuard.writeLock().unlock();
+            }
+
+            try {
+                SelectorUtil.select(selector);
+
+                // 'wakenUp.compareAndSet(false, true)' is always evaluated
+                // before calling 'selector.wakeup()' to reduce the wake-up
+                // overhead. (Selector.wakeup() is an expensive operation.)
+                //
+                // However, there is a race condition in this approach.
+                // The race condition is triggered when 'wakenUp' is set to
+                // true too early.
+                //
+                // 'wakenUp' is set to true too early if:
+                // 1) Selector is waken up between 'wakenUp.set(false)' and
+                //    'selector.select(...)'. (BAD)
+                // 2) Selector is waken up between 'selector.select(...)' and
+                //    'if (wakenUp.get()) { ... }'. (OK)
+                //
+                // In the first case, 'wakenUp' is set to true and the
+                // following 'selector.select(...)' will wake up immediately.
+                // Until 'wakenUp' is set to false again in the next round,
+                // 'wakenUp.compareAndSet(false, true)' will fail, and therefore
+                // any attempt to wake up the Selector will fail, too, causing
+                // the following 'selector.select(...)' call to block
+                // unnecessarily.
+                //
+                // To fix this problem, we wake up the selector again if wakenUp
+                // is true immediately after selector.select(...).
+                // It is inefficient in that it wakes up the selector for both
+                // the first case (BAD - wake-up required) and the second case
+                // (OK - no wake-up required).
+
+                if (wakenUp.get()) {
+                    selector.wakeup();
+                }
+
+                cancelledKeys = 0;
+                processRegisterTaskQueue();
+                processWriteTaskQueue();
+                processSelectedKeys(selector.selectedKeys());
+
+                // Exit the loop when there's nothing to handle.
+                // The shutdown flag is used to delay the shutdown of this
+                // loop to avoid excessive Selector creation when
+                // connections are registered in a one-by-one manner instead of
+                // concurrent manner.
+                if (selector.keys().isEmpty()) {
+                    if (shutdown ||
+                        executor instanceof ExecutorService && ((ExecutorService) executor).isShutdown()) {
+
+                        synchronized (startStopLock) {
+                            if (registerTaskQueue.isEmpty() && selector.keys().isEmpty()) {
+                                started = false;
+                                try {
+                                    selector.close();
+                                } catch (IOException e) {
+                                    if (logger.isWarnEnabled()) {
+                                        logger.warn(
+                                                "Failed to close a selector.", e);
+                                    }
+                                } finally {
+                                    this.selector = null;
+                                }
+                                break;
+                            } else {
+                                shutdown = false;
+                            }
+                        }
+                    } else {
+                        // Give one more second.
+                        shutdown = true;
+                    }
+                } else {
+                    shutdown = false;
+                }
+            } catch (Throwable t) {
+                if (logger.isWarnEnabled()) {
+                    logger.warn(
+                            "Unexpected exception in the selector loop.", t);
+                }
+
+
+                // Prevent possible consecutive immediate failures that lead to
+                // excessive CPU consumption.
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // Ignore.
+                }
+            }
+        }
+    }
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138675/fstmerge_base_7169780764853465535
+@Override
+    public void run() {
+        thread = Thread.currentThread();
+
+        boolean shutdown = false;
+        Selector selector = this.selector;
+        for (;;) {
+            wakenUp.set(false);
+
+            if (CONSTRAINT_LEVEL != 0) {
+                selectorGuard.writeLock().lock();
+                    // This empty synchronization block prevents the selector
+                    // from acquiring its lock.
+                selectorGuard.writeLock().unlock();
+            }
+
+            try {
+                SelectorUtil.select(selector);
+
+                // 'wakenUp.compareAndSet(false, true)' is always evaluated
+                // before calling 'selector.wakeup()' to reduce the wake-up
+                // overhead. (Selector.wakeup() is an expensive operation.)
+                //
+                // However, there is a race condition in this approach.
+                // The race condition is triggered when 'wakenUp' is set to
+                // true too early.
+                //
+                // 'wakenUp' is set to true too early if:
+                // 1) Selector is waken up between 'wakenUp.set(false)' and
+                //    'selector.select(...)'. (BAD)
+                // 2) Selector is waken up between 'selector.select(...)' and
+                //    'if (wakenUp.get()) { ... }'. (OK)
+                //
+                // In the first case, 'wakenUp' is set to true and the
+                // following 'selector.select(...)' will wake up immediately.
+                // Until 'wakenUp' is set to false again in the next round,
+                // 'wakenUp.compareAndSet(false, true)' will fail, and therefore
+                // any attempt to wake up the Selector will fail, too, causing
+                // the following 'selector.select(...)' call to block
+                // unnecessarily.
+                //
+                // To fix this problem, we wake up the selector again if wakenUp
+                // is true immediately after selector.select(...).
+                // It is inefficient in that it wakes up the selector for both
+                // the first case (BAD - wake-up required) and the second case
+                // (OK - no wake-up required).
+
+                if (wakenUp.get()) {
+                    selector.wakeup();
+                }
+
+                cancelledKeys = 0;
+                processRegisterTaskQueue();
+                processWriteTaskQueue();
+                processSelectedKeys(selector.selectedKeys());
+
+                // Exit the loop when there's nothing to handle.
+                // The shutdown flag is used to delay the shutdown of this
+                // loop to avoid excessive Selector creation when
+                // connections are registered in a one-by-one manner instead of
+                // concurrent manner.
+                if (selector.keys().isEmpty()) {
+                    if (shutdown ||
+                        executor instanceof ExecutorService && ((ExecutorService) executor).isShutdown()) {
+
+                        synchronized (startStopLock) {
+                            if (registerTaskQueue.isEmpty() && selector.keys().isEmpty()) {
+                                started = false;
+                                try {
+                                    selector.close();
+                                } catch (IOException e) {
+                                    logger.warn(
+                                            "Failed to close a selector.", e);
+                                } finally {
+                                    this.selector = null;
+                                }
+                                break;
+                            } else {
+                                shutdown = false;
+                            }
+                        }
+                    } else {
+                        // Give one more second.
+                        shutdown = true;
+                    }
+                } else {
+                    shutdown = false;
+                }
+            } catch (Throwable t) {
+                logger.warn(
+                        "Unexpected exception in the selector loop.", t);
+
+                // Prevent possible consecutive immediate failures that lead to
+                // excessive CPU consumption.
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // Ignore.
+                }
+            }
+        }
+    }
+=======
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409231138675/fstmerge_var2_6075351186921764794
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_a7152_eafd8/rev_a7152-eafd8/transport/src/main/java/io/netty/channel/socket/nio/NioWorker.java
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_6d8da_fe1d5/rev_6d8da-fe1d5.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_0bb1f_479de/rev_0bb1f-479de.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_1afb2_88d60/rev_1afb2-88d60.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_63f4b_90d9f/rev_63f4b-90d9f.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_e5466_bca79/rev_e5466-bca79.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_e5466_bca79/rev_e5466-bca79.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_06fd8_1162f/rev_06fd8-1162f.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_f2eee_39924/rev_f2eee-39924.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_c52cb_cd95d/rev_c52cb-cd95d.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_927c4_d43d9/rev_927c4-d43d9.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_37926_d0c8c/rev_37926-d0c8c.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc.revisions
+Conflict type: LineBasedMCFd
+Conflict body: 
+public void start() throws Exception {
+        if (channel != null) {
+            System.out.println("Already running!");
+            return;
+        }
+
+        workerGroup = new NioEventLoopGroup();
+
+        Bootstrap b = new Bootstrap();
+        b.group(workerGroup);
+        b.channel(NioSocketChannel.class);
+        b.option(ChannelOption.SO_KEEPALIVE, true);
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505272/fstmerge_var1_2174737086648202714
+        b.remoteAddress(new InetSocketAddress(host, port));
+        b.handler(new Http2ClientInitializer(sslCtx, http2ConnectionHandler));
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505272/fstmerge_base_7263141163897173456
+        b.remoteAddress(new InetSocketAddress(host, port));
+        b.handler(new Http2ClientInitializer(http2ConnectionHandler));
+=======
+        b.remoteAddress(new InetSocketAddress(config.host(), config.port()));
+        Http2ClientInitializer initializer = new Http2ClientInitializer(config.isSsl());
+        b.handler(initializer);
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505272/fstmerge_var2_4438726957343425315
+
+        // Start the client.
+        channel = b.connect().syncUninterruptibly().channel();
+        System.out.println("Connected to [" + config.host() + ':' + config.port() + ']');
+
+        // Wait for the HTTP/2 upgrade to occur.
+        http2ConnectionHandler = initializer.connectionHandler();
+        http2ConnectionHandler.awaitInitialization();
+    }
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc/example/src/main/java/io/netty/example/http2/client/Http2Client.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+public static void main(String[] args) throws Exception {
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505289/fstmerge_var1_3201759818862715331
+        int port;
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        } else {
+            port = 8443;
+        }
+
+        final Http2Client client = new Http2Client("localhost", port);
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505289/fstmerge_base_7840191665315243215
+        Http2Server.checkForNpnSupport();
+        int port;
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        } else {
+            port = 8443;
+        }
+
+        final Http2Client client = new Http2Client("localhost", port);
+=======
+        EndpointConfig config = parseEndpointConfig(args);
+        System.out.println(config);
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505289/fstmerge_var2_2056572482399785180
+
+        final Http2Client client = new Http2Client(config);
+        try {
+            // Start the client and wait for the HTTP/2 upgrade to complete.
+            client.start();
+
+            // Create a simple GET request with just headers.
+            FullHttpRequest request = new DefaultFullHttpRequest(HTTP_1_1, GET, "/whatever");
+            request.headers().add(HOST, config.host());
+
+            System.out.println("Sending request...");
+            ChannelFuture requestFuture = client.channel.writeAndFlush(request).sync();
+            System.out.println("Back from sending headers...");
+            if (!requestFuture.isSuccess()) {
+                requestFuture.cause().printStackTrace();
+                return;
+            }
+
+            // Waits for the complete response
+            client.awaitResponse();
+            System.out.println("Finished HTTP/2 request");
+        } catch (Throwable t) {
+            t.printStackTrace();
+        } finally {
+            client.stop();
+        }
+    }
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc/example/src/main/java/io/netty/example/http2/client/Http2Client.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505346/fstmerge_var1_934627845197265422
+public Http2Client(String host, int port) throws SSLException {
+        sslCtx = SslContext.newClientContext(
+                null, InsecureTrustManagerFactory.INSTANCE, null,
+                SslContext.newApplicationProtocolSelector(
+                        SelectedProtocol.HTTP_2.protocolName(),
+                        SelectedProtocol.HTTP_1_1.protocolName()),
+                0, 0);
+
+        this.host = host;
+        this.port = port;
+        http2ConnectionHandler = new Http2ClientConnectionHandler();
+    }
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505346/fstmerge_base_2945166423018794699
+public Http2Client(String host, int port) {
+        this.host = host;
+        this.port = port;
+        http2ConnectionHandler = new Http2ClientConnectionHandler();
+    }
+=======
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505346/fstmerge_var2_7808553459004181520
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc/example/src/main/java/io/netty/example/http2/client/Http2Client.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+@Override
+    public void initChannel(SocketChannel ch) throws Exception {
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505575/fstmerge_var1_1780765044858002679
+        ch.pipeline().addLast(sslCtx.newHandler(ch.alloc()), connectionHandler);
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505575/fstmerge_base_7209423231695206722
+        SSLEngine engine = SecureChatSslContextFactory.getClientContext().createSSLEngine();
+        engine.setUseClientMode(true);
+        NextProtoNego.put(engine, new Http2ClientProvider());
+        NextProtoNego.debug = true;
+
+        ChannelPipeline pipeline = ch.pipeline();
+
+        pipeline.addLast("ssl", new SslHandler(engine));
+        pipeline.addLast("http2ConnectionHandler", connectionHandler);
+=======
+        connectionHandler = new Http2ClientConnectionHandler(ch.newPromise(), ch.newPromise());
+        if (ssl) {
+            configureSsl(ch);
+        } else {
+            configureClearText(ch);
+        }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505575/fstmerge_var2_8680127107089702215
+    }
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc/example/src/main/java/io/netty/example/http2/client/Http2ClientInitializer.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+public void run() throws Exception {
+        // Configure the server.
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.option(ChannelOption.SO_BACKLOG, 1024);
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505771/fstmerge_var1_4534177085787959742
+                    .childHandler(new Http2ServerInitializer(sslCtx));
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505771/fstmerge_base_6386840918693008547
+                    .childHandler(new Http2ServerInitializer());
+=======
+                    .childHandler(new Http2ServerInitializer(config.isSsl()));
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505771/fstmerge_var2_5550671533325811230
+
+            Channel ch = b.bind(config.port()).sync().channel();
+            ch.closeFuture().sync();
+        } finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
+        }
+    }
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc/example/src/main/java/io/netty/example/http2/server/Http2Server.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+public static void main(String[] args) throws Exception {
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505778/fstmerge_var1_3923533409163479869
+        int port;
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        } else {
+            port = 8443;
+        }
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505778/fstmerge_base_2369719209061323337
+        checkForNpnSupport();
+        int port;
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        } else {
+            port = 8443;
+        }
+=======
+        EndpointConfig config = parseEndpointConfig(args);
+        System.out.println(config);
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505778/fstmerge_var2_4383783330707782665
+
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505778/fstmerge_var1_3923533409163479869
+        System.out.println("HTTP2 server started at port " + port + '.');
+
+        // Configure SSL context.
+        SelfSignedCertificate ssc = new SelfSignedCertificate();
+        SslContext sslCtx = SslContext.newServerContext(
+                ssc.certificate(), ssc.privateKey(), null, null,
+                Arrays.asList(
+                        SelectedProtocol.HTTP_2.protocolName(),
+                        SelectedProtocol.HTTP_1_1.protocolName()),
+                0, 0);
+
+        new Http2Server(sslCtx, port).run();
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505778/fstmerge_base_2369719209061323337
+        System.out.println("HTTP2 server started at port " + port + '.');
+
+        new Http2Server(port).run();
+=======
+        System.out.println("HTTP2 server started at port " + config.port() + '.');
+        new Http2Server(config).run();
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505778/fstmerge_var2_4383783330707782665
+    }
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc/example/src/main/java/io/netty/example/http2/server/Http2Server.java
+Conflict type: LineBasedMCFd
+Conflict body: 
+@Override
+    public void initChannel(SocketChannel ch) throws Exception {
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505786/fstmerge_var1_8292805111621785829
+        ch.pipeline().addLast(sslCtx.newHandler(ch.alloc()), new Http2OrHttpHandler());
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505786/fstmerge_base_1464213954224889354
+        ChannelPipeline p = ch.pipeline();
+
+        SSLEngine engine = SecureChatSslContextFactory.getServerContext().createSSLEngine();
+        engine.setUseClientMode(false);
+        p.addLast("ssl", new SslHandler(engine));
+
+        // Setup NextProtoNego with our server provider
+        NextProtoNego.put(engine, new Http2ServerProvider());
+        NextProtoNego.debug = true;
+
+        // Negotiates with the browser if HTTP2 or HTTP is going to be used
+        p.addLast("handler", new Http2OrHttpHandler());
+=======
+        if (ssl) {
+            configureSsl(ch);
+        } else {
+            configureClearText(ch);
+        }
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409234505786/fstmerge_var2_9195816925174140626
+    }
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_46ed3_086dc/rev_46ed3-086dc/example/src/main/java/io/netty/example/http2/server/Http2ServerInitializer.java
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_7eefc_1f67b/rev_7eefc-1f67b.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_be6dd_a9814/rev_be6dd-a9814.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_3a3e9_faa19/rev_3a3e9-faa19.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_df723_8ab1e/rev_df723-8ab1e.revisions
+
+=========================================================

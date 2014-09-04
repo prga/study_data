@@ -1,0 +1,205 @@
+=========================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_c2417_b3b09/rev_c2417-b3b09.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_84ed7_31b31/rev_84ed7-31b31.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_3ecb9_01c45/rev_3ecb9-01c45.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_a0179_aa551/rev_a0179-aa551.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_09483_a6d16/rev_09483-a6d16.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_87913_7be8d/rev_87913-7be8d.revisions
+Conflict type: LineBasedMCFd
+Conflict body: 
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409701562619/fstmerge_var1_6603125395154018529
+@Test
+    public void testPerformOpeningHandshake() {
+        Channel channelMock = EasyMock.createMock(Channel.class);
+        
+        DefaultChannelPipeline pipeline = createPipeline();
+        EasyMock.expect(channelMock.getPipeline()).andReturn(pipeline);
+        
+        // capture the http response in order to verify the headers
+        Capture<HttpResponse> res = new Capture<HttpResponse>();
+        EasyMock.expect(channelMock.write(capture(res))).andReturn(new DefaultChannelFuture(channelMock, true));
+        
+        replay(channelMock);
+        
+        HttpRequest req = new DefaultHttpRequest(HTTP_1_1, HttpMethod.GET, "/chat");
+        req.setHeader(Names.HOST, "server.example.com");
+        req.setHeader(Names.UPGRADE, WEBSOCKET.toLowerCase());
+        req.setHeader(Names.CONNECTION, "Upgrade");
+        req.setHeader(Names.SEC_WEBSOCKET_KEY, "dGhlIHNhbXBsZSBub25jZQ==");
+        req.setHeader(Names.SEC_WEBSOCKET_ORIGIN, "http://example.com");
+        req.setHeader(Names.SEC_WEBSOCKET_PROTOCOL, "chat, superchat");
+        req.setHeader(Names.SEC_WEBSOCKET_VERSION, "13");
+        
+        WebSocketServerHandshaker17 handsaker = new WebSocketServerHandshaker17("ws://example.com/chat", "chat", false);
+        handsaker.performOpeningHandshake(channelMock, req);
+        
+        Assert.assertEquals("s3pPLMBiTxaQ9kYGzzhZRbK+xOo=", res.getValue().getHeader(Names.SEC_WEBSOCKET_ACCEPT));
+        Assert.assertEquals("chat", res.getValue().getHeader(Names.SEC_WEBSOCKET_PROTOCOL));
+    }
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409701562619/fstmerge_base_6252204735707619229
+@Test
+    public void testPerformOpeningHandshake() {
+        Channel channelMock = EasyMock.createMock(Channel.class);
+        
+        DefaultChannelPipeline pipeline = createPipeline();
+        EasyMock.expect(channelMock.getPipeline()).andReturn(pipeline);
+        
+        // capture the http response in order to verify the headers
+        Capture<HttpResponse> res = new Capture<HttpResponse>();
+        EasyMock.expect(channelMock.write(capture(res))).andReturn(new DefaultChannelFuture(channelMock, true));
+        
+        replay(channelMock);
+        
+        HttpRequest req = new DefaultHttpRequest(HTTP_1_1, HttpMethod.GET, "/chat");
+        req.setHeader(Names.HOST, "server.example.com");
+        req.setHeader(Names.UPGRADE, WEBSOCKET.toLowerCase());
+        req.setHeader(Names.CONNECTION, "Upgrade");
+        req.setHeader(Names.SEC_WEBSOCKET_KEY, "dGhlIHNhbXBsZSBub25jZQ==");
+        req.setHeader(Names.SEC_WEBSOCKET_ORIGIN, "http://example.com");
+        req.setHeader(Names.SEC_WEBSOCKET_PROTOCOL, "chat, superchat");
+        req.setHeader(Names.SEC_WEBSOCKET_VERSION, "13");
+        
+        WebSocketServerHandshaker17 handsaker17 = new WebSocketServerHandshaker17("ws://example.com/chat", "chat", false);
+        handsaker17.performOpeningHandshake(channelMock, req);
+        
+        Assert.assertEquals("s3pPLMBiTxaQ9kYGzzhZRbK+xOo=", res.getValue().getHeader(Names.SEC_WEBSOCKET_ACCEPT));
+        Assert.assertEquals("chat", res.getValue().getHeader(Names.SEC_WEBSOCKET_PROTOCOL));
+    }
+=======
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409701562619/fstmerge_var2_7014650856075005223
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_87913_7be8d/rev_87913-7be8d/src/test/java/io/netty/handler/codec/http/websocketx/WebSocketServerHandshaker17Test.java
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_5f465_689c4/rev_5f465-689c4.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_8533e_e9490/rev_8533e-e9490.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_7037d_5398a/rev_7037d-5398a.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_bb6d1_c5582/rev_bb6d1-c5582.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_76c84_4eac8/rev_76c84-4eac8.revisions
+Conflict type: LineBasedMCFd
+Conflict body: 
+@Override
+    protected void registerTask(AbstractNioChannel channel, ChannelFuture future) {
+        boolean server = !(channel instanceof NioClientSocketChannel);
+        SocketAddress localAddress = channel.getLocalAddress();
+        SocketAddress remoteAddress = channel.getRemoteAddress();
+
+        if (localAddress == null || remoteAddress == null) {
+            if (future != null) {
+                future.setFailure(new ClosedChannelException());
+            }
+            close(channel, succeededFuture(channel));
+            return;
+        }
+
+        try {
+            if (server) {
+                channel.getJdkChannel().configureBlocking(false);
+            }
+            
+            boolean registered = channel.getJdkChannel().isRegistered();
+            if (!registered) {
+                synchronized (channel.interestOpsLock) {
+                    channel.getJdkChannel().register(
+                            selector, channel.getRawInterestOps(), channel);
+                }
+                
+            } else {
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409702802520/fstmerge_base_8669398249640551584
+                // TODO: Is this needed ?
+                setInterestOps(channel, future, channel.getRawInterestOps());
+=======
+                setInterestOps(channel, succeededFuture(channel), channel.getRawInterestOps());
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409702802520/fstmerge_var2_8481424286958172204
+            }
+            if (future != null) {
+<<<<<<< /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409702802520/fstmerge_var1_3078348162752310545
+                if (channel instanceof NioSocketChannel) {
+                    ((NioSocketChannel) channel).setConnected();
+                }
+||||||| /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409702802520/fstmerge_base_8669398249640551584
+                ((NioSocketChannel) channel).setConnected();
+=======
+
+                ((NioSocketChannel) channel).setConnected();
+>>>>>>> /Users/paolaaccioly/Documents/Doutorado/ssmerge/FH/featurehouse-master/fstmerge_tmp1409702802520/fstmerge_var2_8481424286958172204
+                future.setSuccess();
+            }
+            
+        } catch (IOException e) {
+            if (future != null) {
+                future.setFailure(e);
+            }
+            close(channel, succeededFuture(channel));
+            if (!(e instanceof ClosedChannelException)) {
+                throw new ChannelException(
+                        "Failed to register a socket to the selector.", e);
+            }
+        }
+
+        if (server || !((NioClientSocketChannel) channel).boundManually) {
+            fireChannelBound(channel, localAddress);
+        }
+        fireChannelConnected(channel, remoteAddress);
+    }
+
+File path: /Users/paolaaccioly/gitClones/netty/revisions/rev_76c84_4eac8/rev_76c84-4eac8/transport/src/main/java/io/netty/channel/socket/nio/NioWorker.java
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_a6d71_c3749/rev_a6d71-c3749.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_30ef2_09b41/rev_30ef2-09b41.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_b0996_d56aa/rev_b0996-d56aa.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_11e97_e0222/rev_11e97-e0222.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_967b5_77859/rev_967b5-77859.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_1d1d7_2610a/rev_1d1d7-2610a.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_9f9b3_33c42/rev_9f9b3-33c42.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_0b11f_7ab8c/rev_0b11f-7ab8c.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_ce88a_3a3e9/rev_ce88a-3a3e9.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_f75b6_1354b/rev_f75b6-1354b.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_cbcab_951c4/rev_cbcab-951c4.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_a192c_e95d3/rev_a192c-e95d3.revisions
+
+==================================================================================================================
+Revision: /Users/paolaaccioly/gitClones/netty/revisions/rev_cf757_bc201/rev_cf757-bc201.revisions
+
+=========================================================
